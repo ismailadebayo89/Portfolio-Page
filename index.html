@@ -19,24 +19,103 @@
     --border: rgba(255,255,255,0.08);
     --text: #FFFFFF;
     --muted: #9CA3AF;
+    --green: #22C55E;
+    --green-dim: rgba(34,197,94,0.12);
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 64px; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
   .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.5px; color: var(--text); }
   .nav-logo span { color: var(--orange); }
-  .nav-badge { font-size: 11px; font-weight: 600; color: var(--orange); letter-spacing: 1.5px; background: var(--orange-dim); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(249,115,22,0.25); }
-  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 5vw 80px; position: relative; overflow: hidden; }
+  .nav-badge {
+    font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 1.5px;
+    background: var(--green-dim); padding: 5px 12px; border-radius: 20px;
+    border: 1px solid rgba(34,197,94,0.3);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-badge::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green); display: inline-block;
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── Live banner ── */
+  .live-banner {
+    margin-top: 64px;
+    background: linear-gradient(90deg, rgba(34,197,94,0.08) 0%, rgba(249,115,22,0.08) 100%);
+    border-bottom: 1px solid rgba(34,197,94,0.2);
+    padding: 12px 5vw;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  .live-banner-text { font-size: 14px; color: var(--muted); }
+  .live-banner-text strong { color: var(--text); }
+  .live-badge {
+    font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 1.5px;
+    background: var(--green-dim); padding: 4px 10px; border-radius: 20px;
+    border: 1px solid rgba(34,197,94,0.3);
+    white-space: nowrap;
+  }
+  .play-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); font-size: 13px; font-weight: 600;
+    padding: 6px 14px; border-radius: 8px; text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+  .play-link:hover { border-color: var(--orange); background: var(--orange-dim); }
+
+  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 5vw 80px; position: relative; overflow: hidden; }
   .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%); pointer-events: none; }
   .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin-bottom: 20px; }
   .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(72px, 14vw, 140px); font-weight: 900; line-height: 0.9; letter-spacing: -2px; margin-bottom: 24px; }
   .hero h1 em { font-style: normal; color: var(--orange); }
   .hero-sub { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); max-width: 520px; margin: 0 auto 40px; line-height: 1.6; }
+
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
   .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px; text-decoration: none; transition: opacity 0.2s; }
   .btn:hover { opacity: 0.9; }
+  .btn-outline { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px; text-decoration: none; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
+  .btn-outline:hover { border-color: var(--orange); background: var(--orange-dim); }
+
+  /* Play Store button */
+  .btn-play {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--green); color: #000;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700;
+    letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .btn-play:hover { opacity: 0.9; }
+
   .hero-steps { display: flex; align-items: center; gap: 8px; margin-top: 48px; flex-wrap: wrap; justify-content: center; }
   .step-pill { font-size: 13px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; }
   .step-arrow { color: var(--border); font-size: 14px; }
+
+  /* ── Release card ── */
+  .release-card {
+    margin-top: 48px;
+    background: var(--surface);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 16px;
+    padding: 20px 28px;
+    display: flex; align-items: center; gap: 16px;
+    max-width: 480px;
+    text-align: left;
+  }
+  .release-icon { font-size: 32px; flex-shrink: 0; }
+  .release-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .release-sub { font-size: 13px; color: var(--muted); }
+  .release-sub a { color: var(--orange); text-decoration: none; }
+  .release-sub a:hover { text-decoration: underline; }
+
   section { padding: 100px 5vw; }
   .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin-bottom: 16px; }
   .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 56px); font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 16px; }
@@ -68,14 +147,17 @@
   .hero-eyebrow { animation: fadeUp 0.6s ease both; }
   .hero h1 { animation: fadeUp 0.6s 0.1s ease both; }
   .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
-  .btn { animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-ctas { animation: fadeUp 0.6s 0.3s ease both; }
   .hero-steps { animation: fadeUp 0.6s 0.4s ease both; }
+  .release-card { animation: fadeUp 0.6s 0.5s ease both; }
   @media (max-width: 640px) {
     .metrics-grid { grid-template-columns: 1fr; }
     .about-grid { grid-template-columns: 1fr; }
     .hero-steps { display: none; }
     nav { padding: 0 20px; }
     section { padding: 72px 20px; }
+    .live-banner { padding: 12px 20px; }
+    .release-card { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
@@ -83,14 +165,28 @@
 
 <nav>
   <div class="nav-logo">Hoop<span>IQ</span></div>
-  <div class="nav-badge">Coming to Google Play</div>
+  <div class="nav-badge">LIVE ON GOOGLE PLAY</div>
 </nav>
+
+<!-- Live announcement banner -->
+<div class="live-banner">
+  <span class="live-badge">🎉 V1.0 RELEASED</span>
+  <span class="live-banner-text">HoopIQ is now <strong>live on the Google Play Store</strong> — download it today</span>
+  <a class="play-link" href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">
+    ▶ Get it on Google Play
+  </a>
+</div>
 
 <section class="hero">
   <p class="hero-eyebrow">AI Basketball Form Coach</p>
   <h1>Hoop<em>IQ</em></h1>
   <p class="hero-sub">Shoot. Analyse. Drill. Fix — in one session. AI pose detection tells you exactly what's wrong with your form and gives you a drill to fix it right now.</p>
-  <a class="btn" href="#about">Learn More</a>
+
+  <div class="hero-ctas">
+    <a class="btn-play" href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">▶ Download Free on Google Play</a>
+    <a class="btn-outline" href="#about">Learn More</a>
+  </div>
+
   <div class="hero-steps">
     <span class="step-pill">📸 Record shot</span>
     <span class="step-arrow">→</span>
@@ -99,6 +195,14 @@
     <span class="step-pill">🎯 Get a drill</span>
     <span class="step-arrow">→</span>
     <span class="step-pill">📈 Track improvement</span>
+  </div>
+
+  <div class="release-card">
+    <div class="release-icon">🏀</div>
+    <div>
+      <div class="release-title">Version 1.0 — First Release</div>
+      <div class="release-sub">Now available for Android · <a href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">com.hoopiq.app</a></div>
+    </div>
   </div>
 </section>
 
@@ -138,14 +242,13 @@
         <h3>Developer</h3>
         <p>Ismail Adebayo (IzzySlns)<br>Sydney, NSW, Australia</p>
       </div>
-     <div class="about-card">
+      <div class="about-card">
         <h3>Contact</h3>
-        <p style="font-size:15px;color:var(--text);line-height:1.8;">izzyslns2k25@gmail.com</p>
-        <script>document.currentScript.previousElementSibling.innerHTML='<a href="#" onclick="window.open('mai'+'lto:izzyslns2k25@gmail.com');return false;" style="color:var(--orange);text-decoration:none;">izzyslns2k25@gmail.com</a>'</script>
+        <p><a href="mailto:izzyslns2k25@gmail.com" style="color:var(--orange);text-decoration:none;">izzyslns2k25@gmail.com</a></p>
       </div>
       <div class="about-card">
         <h3>App</h3>
-        <p>HoopIQ — AI Basketball Form Coach<br>Platform: Android (Google Play)<br>Status: Coming soon</p>
+        <p>HoopIQ — AI Basketball Form Coach<br>Platform: Android (Google Play)<br>Status: <span style="color:var(--green);font-weight:600;">Live — v1.0</span></p>
       </div>
       <div class="about-card">
         <h3>Technology</h3>
