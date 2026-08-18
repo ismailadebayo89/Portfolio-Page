@@ -1,283 +1,617 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="1iH9_7uv2ZdZGUleUFrvR89-Ck5cnmszkVB208JSmWU" />
-<title>HoopIQ — AI Basketball Form Coach</title>
-<meta name="description" content="HoopIQ analyses your basketball shooting form using AI pose detection. Record your shot, get instant feedback on elbow angle, release arc, and follow-through, then do a targeted drill to fix it.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --orange: #F97316;
-    --orange-dim: rgba(249,115,22,0.12);
-    --bg: #0A0A0A;
-    --surface: #141414;
-    --surface2: #1E1E1E;
-    --border: rgba(255,255,255,0.08);
-    --text: #FFFFFF;
-    --muted: #9CA3AF;
-    --green: #22C55E;
-    --green-dim: rgba(34,197,94,0.12);
-  }
-  html { scroll-behavior: smooth; }
-  body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 64px; background: rgba(10,10,10,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
-  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 24px; letter-spacing: -0.5px; color: var(--text); }
-  .nav-logo span { color: var(--orange); }
-  .nav-badge {
-    font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 1.5px;
-    background: var(--green-dim); padding: 5px 12px; border-radius: 20px;
-    border: 1px solid rgba(34,197,94,0.3);
-    display: flex; align-items: center; gap: 6px;
-  }
-  .nav-badge::before {
-    content: ''; width: 7px; height: 7px; border-radius: 50%;
-    background: var(--green); display: inline-block;
-    box-shadow: 0 0 6px var(--green);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ismail Adebayo — Software Engineer</title>
+  <meta name="description" content="Freelance software engineer specialising in server-side systems, web applications, and secure software. Based in Newcastle, AU." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── Live banner ── */
-  .live-banner {
-    margin-top: 64px;
-    background: linear-gradient(90deg, rgba(34,197,94,0.08) 0%, rgba(249,115,22,0.08) 100%);
-    border-bottom: 1px solid rgba(34,197,94,0.2);
-    padding: 12px 5vw;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    flex-wrap: wrap;
-    text-align: center;
-  }
-  .live-banner-text { font-size: 14px; color: var(--muted); }
-  .live-banner-text strong { color: var(--text); }
-  .live-badge {
-    font-size: 11px; font-weight: 700; color: var(--green); letter-spacing: 1.5px;
-    background: var(--green-dim); padding: 4px 10px; border-radius: 20px;
-    border: 1px solid rgba(34,197,94,0.3);
-    white-space: nowrap;
-  }
-  .play-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--text); font-size: 13px; font-weight: 600;
-    padding: 6px 14px; border-radius: 8px; text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-    white-space: nowrap;
-  }
-  .play-link:hover { border-color: var(--orange); background: var(--orange-dim); }
+    :root {
+      --bg: #0a0f1a;
+      --surface: #111827;
+      --surface2: #1e293b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #38bdf8;
+      --accent-dim: rgba(56, 189, 248, 0.12);
+      --border: rgba(255,255,255,0.07);
+      --font-sans: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-  .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 5vw 80px; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 700px; height: 700px; background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%); pointer-events: none; }
-  .hero-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin-bottom: 20px; }
-  .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(72px, 14vw, 140px); font-weight: 900; line-height: 0.9; letter-spacing: -2px; margin-bottom: 24px; }
-  .hero h1 em { font-style: normal; color: var(--orange); }
-  .hero-sub { font-size: clamp(16px, 2.5vw, 20px); color: var(--muted); max-width: 520px; margin: 0 auto 40px; line-height: 1.6; }
+    html { scroll-behavior: smooth; }
 
-  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-  .btn { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px; text-decoration: none; transition: opacity 0.2s; }
-  .btn:hover { opacity: 0.9; }
-  .btn-outline { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--text); font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px; text-decoration: none; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
-  .btn-outline:hover { border-color: var(--orange); background: var(--orange-dim); }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
 
-  /* Play Store button */
-  .btn-play {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--green); color: #000;
-    font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700;
-    letter-spacing: 0.5px; padding: 16px 36px; border-radius: 12px;
-    text-decoration: none; transition: opacity 0.2s;
-  }
-  .btn-play:hover { opacity: 0.9; }
+    a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+    a:hover { opacity: 0.75; }
 
-  .hero-steps { display: flex; align-items: center; gap: 8px; margin-top: 48px; flex-wrap: wrap; justify-content: center; }
-  .step-pill { font-size: 13px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; }
-  .step-arrow { color: var(--border); font-size: 14px; }
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      min-height: 100vh;
+    }
 
-  /* ── Release card ── */
-  .release-card {
-    margin-top: 48px;
-    background: var(--surface);
-    border: 1px solid rgba(34,197,94,0.25);
-    border-radius: 16px;
-    padding: 20px 28px;
-    display: flex; align-items: center; gap: 16px;
-    max-width: 480px;
-    text-align: left;
-  }
-  .release-icon { font-size: 32px; flex-shrink: 0; }
-  .release-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-  .release-sub { font-size: 13px; color: var(--muted); }
-  .release-sub a { color: var(--orange); text-decoration: none; }
-  .release-sub a:hover { text-decoration: underline; }
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 340px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 80px 0 60px;
+    }
 
-  section { padding: 100px 5vw; }
-  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 2.5px; color: var(--orange); text-transform: uppercase; margin-bottom: 16px; }
-  .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px, 5vw, 56px); font-weight: 900; line-height: 1; letter-spacing: -1px; margin-bottom: 16px; }
-  .section-sub { color: var(--muted); font-size: 17px; max-width: 560px; }
-  .how { background: var(--surface); }
-  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2px; margin-top: 60px; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .step-card { background: var(--bg); padding: 36px 28px; }
-  .step-num { font-family: 'Barlow Condensed', sans-serif; font-size: 72px; font-weight: 900; color: rgba(249,115,22,0.12); line-height: 1; margin-bottom: 16px; }
-  .step-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-  .step-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
-  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 60px; }
-  .metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 24px; text-align: center; }
-  .metric-val { font-family: 'Barlow Condensed', sans-serif; font-size: 56px; font-weight: 900; color: var(--orange); line-height: 1; margin-bottom: 8px; }
-  .metric-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .metric-desc { font-size: 13px; color: var(--muted); }
-  .metric-tol { display: inline-block; margin-top: 12px; font-size: 11px; color: var(--muted); background: var(--surface2); padding: 4px 10px; border-radius: 20px; }
-  .about { background: var(--surface); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 48px; }
-  .about-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
-  .about-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--muted); letter-spacing: 0.5px; }
-  .about-card p { font-size: 15px; color: var(--text); line-height: 1.8; }
-  .privacy-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-top: 48px; display: flex; flex-direction: column; gap: 16px; }
-  .privacy-box p { color: var(--muted); font-size: 15px; line-height: 1.8; }
-  footer { border-top: 1px solid var(--border); padding: 32px 5vw; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px; }
-  .footer-logo span { color: var(--orange); }
-  footer p { color: var(--muted); font-size: 13px; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
-  .hero h1 { animation: fadeUp 0.6s 0.1s ease both; }
-  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
-  .hero-ctas { animation: fadeUp 0.6s 0.3s ease both; }
-  .hero-steps { animation: fadeUp 0.6s 0.4s ease both; }
-  .release-card { animation: fadeUp 0.6s 0.5s ease both; }
-  @media (max-width: 640px) {
-    .metrics-grid { grid-template-columns: 1fr; }
-    .about-grid { grid-template-columns: 1fr; }
-    .hero-steps { display: none; }
-    nav { padding: 0 20px; }
-    section { padding: 72px 20px; }
-    .live-banner { padding: 12px 20px; }
-    .release-card { flex-direction: column; text-align: center; }
-  }
-</style>
+    .sidebar-top {}
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      font-size: 42px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .name .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blink 1s step-end 3;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .role {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 18px;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 260px;
+      line-height: 1.65;
+    }
+
+    /* Nav */
+    nav { margin-top: 52px; }
+
+    nav ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+    nav a {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+      padding: 4px 0;
+    }
+
+    nav a::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--muted);
+      transition: width 0.25s, background 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--text);
+      opacity: 1;
+    }
+
+    nav a:hover::before,
+    nav a.active::before {
+      width: 52px;
+      background: var(--accent);
+    }
+
+    /* Social */
+    .social {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .social a {
+      color: var(--muted);
+      font-size: 13px;
+      font-family: var(--font-mono);
+      transition: color 0.2s;
+    }
+
+    .social a:hover { color: var(--accent); opacity: 1; }
+
+    /* ── Main content ── */
+    main {
+      flex: 1;
+      padding: 80px 0 120px 80px;
+      max-width: 680px;
+    }
+
+    section { margin-bottom: 100px; }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* ── About ── */
+    #about p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    #about p strong { color: var(--text); font-weight: 500; }
+
+    /* ── Services ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .service-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      background: var(--surface2);
+    }
+
+    .service-icon {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .service-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Projects ── */
+    .project {
+      display: flex;
+      gap: 24px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      margin-bottom: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+
+    .project-meta { flex: 1; }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .project-top h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .project-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .project p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--surface2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .project-arrow {
+      color: var(--muted);
+      font-size: 20px;
+      align-self: flex-start;
+      margin-top: 2px;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .project:hover .project-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
+    /* ── Experience ── */
+    .exp-item { margin-bottom: 36px; }
+
+    .exp-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .exp-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .exp-header span {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .exp-company {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .exp-item p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── Contact ── */
+    .contact-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+    }
+
+    .contact-block p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.75;
+      max-width: 480px;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 12px 20px;
+      border-radius: 8px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .contact-email:hover {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ABN line */
+    .abn-line {
+      margin-top: 28px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 40px 0 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .layout { flex-direction: column; padding: 0 20px; }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        width: 100%;
+        padding: 60px 0 40px;
+      }
+
+      nav { display: none; }
+
+      main { padding: 0 0 80px; }
+
+      .services-grid { grid-template-columns: 1fr; }
+
+      .name { font-size: 32px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo">Hoop<span>IQ</span></div>
-  <div class="nav-badge">LIVE ON GOOGLE PLAY</div>
-</nav>
+<div class="layout">
 
-<!-- Live announcement banner -->
-<div class="live-banner">
-  <span class="live-badge">🎉 V1.0 RELEASED</span>
-  <span class="live-banner-text">HoopIQ is now <strong>live on the Google Play Store</strong> — download it today</span>
-  <a class="play-link" href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">
-    ▶ Get it on Google Play
-  </a>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <p class="eyebrow">Available for work</p>
+      <h1 class="name">Ismail<br>Adebayo<span class="cursor"></span></h1>
+      <p class="role">Software Engineer</p>
+      <p class="tagline">I build reliable, well-crafted software — from backend systems to shipped web products.</p>
+
+      <nav>
+        <ul>
+          <li><a href="#about" class="active">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="social">
+      <a href="https://github.com/ismailadebayo89" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/ismail-adebayo-2b66471a5/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:ismail@izzyslns.app">Email</a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- About -->
+    <section id="about">
+      <p class="section-label">// about</p>
+      <p>
+        I'm a mid-level software engineer based in <strong>Newcastle, NSW</strong>, working across server-side systems, web development, and product engineering. By day I'm part of the team at <strong>Janusnet</strong> — building data classification and security software deployed by defence and government agencies globally.
+      </p>
+      <p>
+        On the side, I take on freelance contracts and build my own products. I've shipped a <strong>Google Play app</strong>, contributed engineering to a live SaaS product, and built internal tooling across different stacks. I work best with clients who need someone who'll take ownership and deliver — not just execute tickets.
+      </p>
+      <p>
+        I'm available for contract work across backend engineering, full-stack web projects, and greenfield product builds.
+      </p>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+      <p class="section-label">// what I do</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">&lt;/&gt;</div>
+          <h3>Web Development</h3>
+          <p>Full-stack web applications built to last — clean architecture, responsive UI, and production-ready from day one.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⚙</div>
+          <h3>Backend & APIs</h3>
+          <p>Server-side systems, REST APIs, and data pipelines. Built with reliability and scalability in mind.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">◈</div>
+          <h3>Product Engineering</h3>
+          <p>End-to-end build from idea to deployed product. I've done it for myself — I can do it for you.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⬡</div>
+          <h3>Security-Conscious Dev</h3>
+          <p>Experience in defence and government-grade software means I take security seriously by default, not as an afterthought.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <p class="section-label">// projects</p>
+
+      <div class="project" style="cursor: default;">
+        <div class="project-meta">
+          <div class="project-top">
+            <h3>HoopIQ</h3>
+            <span class="project-badge">Live on Google Play</span>
+          </div>
+          <p>AI basketball form coach — uses pose detection to analyse your shooting technique and prescribe a drill to fix it in the same session. Designed, built, and shipped independently.</p>
+          <div class="project-tags">
+            <span class="tag">Android</span>
+            <span class="tag">AI / Pose Detection</span>
+            <span class="tag">Google Play</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="project" href="https://logcheckonline.com.au" target="_blank" rel="noopener">
+        <div class="project-meta">
+          <div class="project-top">
+            <h3>LogCheck Online</h3>
+            <span class="project-badge">Live</span>
+          </div>
+          <p>Contributed engineering to this recently launched SaaS product — a digital logbook and compliance platform for Australian businesses.</p>
+          <div class="project-tags">
+            <span class="tag">SaaS</span>
+            <span class="tag">Web App</span>
+            <span class="tag">Compliance</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+
+      <div class="project" style="cursor: default;">
+        <div class="project-meta">
+          <div class="project-top">
+            <h3>Ecom Dashboard</h3>
+            <span class="project-badge">Side Project</span>
+          </div>
+          <p>A private e-commerce analytics dashboard built as a personal project — real-time data views, order tracking, and reporting built from scratch.</p>
+          <div class="project-tags">
+            <span class="tag">Dashboard</span>
+            <span class="tag">Data Viz</span>
+            <span class="tag">E-commerce</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience">
+      <p class="section-label">// experience</p>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <h3>Software Engineer</h3>
+          <span>2023 — Present</span>
+        </div>
+        <p class="exp-company">Janusnet</p>
+        <p>Building server-side and web software for a market-leading data classification platform used by defence agencies, national governments, and regulated industries worldwide. Working across in-house tooling and customer-facing products.</p>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <h3>Freelance Engineer</h3>
+          <span>Ongoing</span>
+        </div>
+        <p class="exp-company">Independent — ABN 51 549 951 379</p>
+        <p>Taking on contract and freelance engagements for clients needing backend, full-stack, and product engineering. Currently available for new projects.</p>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <p class="section-label">// get in touch</p>
+      <div class="contact-block">
+        <p>
+          I'm open to freelance contracts, short-term project work, and interesting collaborations. If you need a developer who takes ownership and ships, let's talk.
+        </p>
+        <a class="contact-email" href="mailto:ismail@izzyslns.app">
+          <span>→</span> ismail@izzyslns.app
+        </a>
+        <p class="abn-line">ABN 51 549 951 379 &nbsp;·&nbsp; Newcastle, NSW, Australia</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built by Ismail Adebayo &nbsp;·&nbsp; izzyslns.app &nbsp;·&nbsp; 2025</p>
+    </footer>
+
+  </main>
 </div>
 
-<section class="hero">
-  <p class="hero-eyebrow">AI Basketball Form Coach</p>
-  <h1>Hoop<em>IQ</em></h1>
-  <p class="hero-sub">Shoot. Analyse. Drill. Fix — in one session. AI pose detection tells you exactly what's wrong with your form and gives you a drill to fix it right now.</p>
+<script>
+  // Highlight nav on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav a');
 
-  <div class="hero-ctas">
-    <a class="btn-play" href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">▶ Download Free on Google Play</a>
-    <a class="btn-outline" href="#about">Learn More</a>
-  </div>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
 
-  <div class="hero-steps">
-    <span class="step-pill">📸 Record shot</span>
-    <span class="step-arrow">→</span>
-    <span class="step-pill">🦴 AI analyses form</span>
-    <span class="step-arrow">→</span>
-    <span class="step-pill">🎯 Get a drill</span>
-    <span class="step-arrow">→</span>
-    <span class="step-pill">📈 Track improvement</span>
-  </div>
-
-  <div class="release-card">
-    <div class="release-icon">🏀</div>
-    <div>
-      <div class="release-title">Version 1.0 — First Release</div>
-      <div class="release-sub">Now available for Android · <a href="https://play.google.com/store/apps/details?id=com.hoopiq.app" target="_blank">com.hoopiq.app</a></div>
-    </div>
-  </div>
-</section>
-
-<section class="how">
-  <div style="max-width:900px;margin:0 auto;">
-    <p class="section-label">How it works</p>
-    <h2 class="section-title">Four steps.<br>One session.</h2>
-    <p class="section-sub">HoopIQ closes the loop other apps leave open — it doesn't just show you what's wrong, it assigns a drill and tracks whether you improved before you leave the gym.</p>
-    <div class="steps-grid">
-      <div class="step-card"><div class="step-num">01</div><h3>Record your shot</h3><p>5-second video from the side. Place your phone 10–15 feet away at waist height so your full body is visible.</p></div>
-      <div class="step-card"><div class="step-num">02</div><h3>AI analyses your form</h3><p>MoveNet pose detection maps 17 body joints and measures your elbow angle, release arc, and follow-through in real time.</p></div>
-      <div class="step-card"><div class="step-num">03</div><h3>Get a drill instantly</h3><p>A specific drill is assigned based on your biggest deviation from ideal form. No generic advice — just the right fix.</p></div>
-      <div class="step-card"><div class="step-num">04</div><h3>Track your progress</h3><p>Your form score is tracked across sessions so you can see real improvement over time, not just guesswork.</p></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div style="max-width:900px;margin:0 auto;">
-    <p class="section-label">What we measure</p>
-    <h2 class="section-title">Three metrics.<br>Measurable results.</h2>
-    <p class="section-sub">Every shot is scored against biomechanically ideal targets with clear tolerances — no vague feedback.</p>
-    <div class="metrics-grid">
-      <div class="metric-card"><div class="metric-val">90°</div><div class="metric-name">Elbow Angle</div><div class="metric-desc">The elbow should be directly under the ball at the set point for maximum accuracy.</div><div class="metric-tol">±15° tolerance</div></div>
-      <div class="metric-card"><div class="metric-val">52°</div><div class="metric-name">Release Arc</div><div class="metric-desc">The optimal release angle for the highest chance of the ball going through the net.</div><div class="metric-tol">±8° tolerance</div></div>
-      <div class="metric-card"><div class="metric-val">170°</div><div class="metric-name">Follow-Through</div><div class="metric-desc">Full wrist extension after release — the finishing position that locks in consistency.</div><div class="metric-tol">±20° tolerance</div></div>
-    </div>
-  </div>
-</section>
-
-<section class="about" id="about">
-  <div style="max-width:900px;margin:0 auto;">
-    <p class="section-label">About</p>
-    <h2 class="section-title">The developer</h2>
-    <div class="about-grid">
-      <div class="about-card">
-        <h3>Developer</h3>
-        <p>Ismail Adebayo (IzzySlns)<br>Sydney, NSW, Australia</p>
-      </div>
-      <div class="about-card">
-        <h3>Contact</h3>
-        <p><a href="mailto:izzyslns2k25@gmail.com" style="color:var(--orange);text-decoration:none;">izzyslns2k25@gmail.com</a></p>
-      </div>
-      <div class="about-card">
-        <h3>App</h3>
-        <p>HoopIQ — AI Basketball Form Coach<br>Platform: Android (Google Play)<br>Status: <span style="color:var(--green);font-weight:600;">Live — v1.0</span></p>
-      </div>
-      <div class="about-card">
-        <h3>Technology</h3>
-        <p>Built with Expo (React Native), TensorFlow.js MoveNet pose detection, and Zustand state management.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="privacy">
-  <div style="max-width:900px;margin:0 auto;">
-    <p class="section-label">Legal</p>
-    <h2 class="section-title">Privacy policy</h2>
-    <div class="privacy-box">
-      <p>HoopIQ is committed to protecting your privacy. Our full privacy policy explains what data we collect, how we use it, and your rights as a user.</p>
-      <p>Key points: video is processed on-device and never uploaded, no personal data is collected, no account required, no third-party advertising SDKs.</p>
-      <a class="btn" href="https://peaceful-peach-887.notion.site/PRIVACY-POLICY-341b1a59cc3a80bbae4fd54e4f6f93d4" target="_blank" style="align-self:flex-start;animation:none;">Read Full Privacy Policy →</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-logo">Hoop<span>IQ</span></div>
-  <p>© 2026 Ismail Adebayo (IzzySlns) · Sydney, NSW, Australia</p>
-  <div style="display:flex;gap:16px;">
-    <a href="https://peaceful-peach-887.notion.site/PRIVACY-POLICY-341b1a59cc3a80bbae4fd54e4f6f93d4" target="_blank" style="color:var(--muted);font-size:13px;text-decoration:none;">Privacy Policy</a>
-    <a href="https://peaceful-peach-887.notion.site/TERMS-OF-USE-341b1a59cc3a80ec98cce4e791d3bee3" target="_blank" style="color:var(--muted);font-size:13px;text-decoration:none;">Terms of Use</a>
-  </div>
-</footer>
+  sections.forEach(s => observer.observe(s));
+</script>
 
 </body>
 </html>
