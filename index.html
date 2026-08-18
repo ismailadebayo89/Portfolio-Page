@@ -41,10 +41,17 @@
     /* ── Layout ── */
     .layout {
       display: flex;
-      max-width: 1100px;
+      max-width: 1200px;
+      min-width: 320px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 40px;
       min-height: 100vh;
+    }
+
+    /* Ultrawide: keep content centred with breathing room */
+    @media (min-width: 1400px) {
+      .layout { max-width: 1300px; padding: 0 80px; }
+      .sidebar { width: 380px; }
     }
 
     /* ── Sidebar ── */
@@ -463,13 +470,13 @@
     <section id="about">
       <p class="section-label">// about</p>
       <p>
-        I'm a mid-level software engineer based in <strong>Newcastle, NSW</strong>, working across server-side systems, web development, and product engineering. By day I'm part of the team at <strong>Janusnet</strong> - building data classification and security software deployed by defence and government agencies globally.
+        I'm a software engineer based in <strong>Newcastle, NSW</strong> - the kind who actually ships things. My day job is at <strong>Janusnet</strong>, where I build server-side and web software that ends up inside defence agencies and government departments across the globe. That environment has a way of making you precise, security-conscious, and intolerant of shortcuts.
       </p>
       <p>
-        On the side, I take on freelance contracts and build my own products. I've shipped a <strong>Google Play app</strong>, contributed engineering to a live SaaS product, and built internal tooling across different stacks. I work best with clients who need someone who'll take ownership and deliver - not just execute tickets.
+        Before that: systems development at <strong>Zenobē</strong> (energy and EV infrastructure), and a SCADA engineering internship at <strong>Hunter H2O</strong>. I've worked across embedded systems, industrial automation, and modern web stacks - which means I'm comfortable closer to the metal than most web developers, and more comfortable with product thinking than most backend engineers.
       </p>
       <p>
-        I'm available for contract work across backend engineering, full-stack web projects, and greenfield product builds.
+        Outside of work I build my own products - an AI sports coaching app on Google Play, a SaaS compliance tool, and things that live quietly in private repos. I take on freelance contracts when the work is interesting and the client wants a builder, not just a body.
       </p>
     </section>
 
